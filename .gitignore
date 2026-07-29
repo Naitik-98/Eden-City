@@ -1,0 +1,61 @@
+# =============================================================================
+# Eden City .gitignore
+# =============================================================================
+
+# CMake build output
+build/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# Nuget download cache (not needed in repo)
+lib/nuget_pkg/
+nuget.exe
+
+# Build output
+build/
+Debug/
+Release/
+x64/
+x86/
+*.exe
+*.dll
+*.obj
+*.o
+*.pdb
+*.ilk
+*.idb
+*.exp
+*.pch
+*.cache
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.opensdf
+*.sdf
+*.db
+*.opendb
+*.VC.db
+*.VC.opendb
+ipch/
+*.tlog
+*.log
+*.lastbuildstate
+*.iobj
+*.ipdb
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Dependencies (uncomment if you prefer NOT to commit libraries)
+# lib/glad/
+# lib/glm/
+# lib/freeglut/
