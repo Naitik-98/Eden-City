@@ -84,4 +84,3 @@ See the implementation plan for detailed class diagrams.
 
 ---
 
-*University project — Computer Graphics course.*
