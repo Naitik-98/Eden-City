@@ -18,82 +18,82 @@
 
 ---
 
-## Step 2: OpenGL Window 🔜
+## Step 2: OpenGL Window ✅
 
-- [ ] Create Game.h + Game.cpp (owns all subsystems, main loop)
-- [ ] Create Renderer.h + Renderer.cpp (minimal: clear sky color)
-- [ ] GLUT init in main.cpp: glutInit, glutCreateWindow, glutMainLoop
-- [ ] OpenGL 3.3 Core context via glutInitContextVersion
-- [ ] gladLoadGLLoader() after GLUT creates context
-- [ ] Clear color = Config::SKY_R/G/B
-- [ ] Window title = "Eden City"
-- [ ] Verify window opens and clears to dark blue sky
-
-
----
-
-## Step 3: Rendering Pipeline ⬜
-
-- [ ] Create ShaderProgram.h + ShaderProgram.cpp
-- [ ] Write full basic.vert (position + color + MVP)
-- [ ] Write full basic.frag (pass-through color)
-- [ ] VBO/VAO setup for a colored cube
-- [ ] MVP matrices: glm::perspective + glm::lookAt + glm::mat4(1.0)
-- [ ] Render first colored cube on screen
+- [x] Create Game.h + Game.cpp (owns all subsystems, main loop)
+- [x] Create Renderer.h + Renderer.cpp (minimal: clear sky color)
+- [x] GLUT init in main.cpp: glutInit, glutCreateWindow, glutMainLoop
+- [x] OpenGL 3.3 Core context via glutInitContextVersion
+- [x] gladLoadGLLoader() after GLUT creates context
+- [x] Clear color = Config::SKY_R/G/B
+- [x] Window title = "Eden City"
+- [x] Verify window opens and clears to dark blue sky
 
 
 ---
 
-## Step 4: Voxel World ⬜
+## Step 3: Rendering Pipeline ✅
 
-- [ ] Chunk.h + Chunk.cpp (16x16x16 Block array, isDirty flag)
-- [ ] World.h + World.cpp (owns chunks, isSolidAt(), getBlockAt())
-- [ ] WorldGenerator.h + WorldGenerator.cpp (flat terrain)
-- [ ] MeshBuilder.h + MeshBuilder.cpp (chunk → VBO/VAO, face culling)
-- [ ] Render flat voxel ground
-
-
----
-
-## Step 5: FPS Camera + Input ⬜
-
-- [ ] Camera.h + Camera.cpp (yaw/pitch → view matrix via glm::lookAt)
-- [ ] InputManager.h + InputManager.cpp (GLUT callbacks → pollable state)
-- [ ] WASD movement
-- [ ] Mouse look (glutWarpPointer infinite capture)
+- [x] Create ShaderProgram.h + ShaderProgram.cpp
+- [x] Write full basic.vert (position + color + MVP)
+- [x] Write full basic.frag (pass-through color)
+- [x] VBO/VAO setup for a colored cube
+- [x] MVP matrices: glm::perspective + glm::lookAt + glm::mat4(1.0)
+- [x] Render first colored cube on screen
 
 
 ---
 
-## Step 6: Collision Detection ⬜
+## Step 4: Voxel World ✅
 
-- [ ] Player.h + Player.cpp (owns Camera, AABB 0.6x1.8)
-- [ ] Per-axis AABB vs World::isSolidAt()
-- [ ] Cannot walk through blocks
-
-
----
-
-## Step 7: Gravity & Jumping ⬜
-
-- [ ] Euler integration: vel.y -= gravity * dt
-- [ ] Jump impulse when grounded
-- [ ] Terminal velocity clamp
+- [x] Chunk.h + Chunk.cpp (16x16x16 Block array, isDirty flag)
+- [x] World.h + World.cpp (owns chunks, isSolidAt(), getBlockAt())
+- [x] WorldGenerator.h + WorldGenerator.cpp (flat terrain)
+- [x] MeshBuilder.h + MeshBuilder.cpp (chunk → VBO/VAO, face culling)
+- [x] Render flat voxel ground
 
 
 ---
 
-## Step 8: Crosshair HUD ⬜
+## Step 5: FPS Camera + Input ✅
 
-- [ ] Orthographic projection overlay in Renderer
-- [ ] Two short lines at screen center
+- [x] Camera.h + Camera.cpp (yaw/pitch → view matrix via glm::lookAt)
+- [x] InputManager.h + InputManager.cpp (GLUT callbacks → pollable state)
+- [x] WASD movement
+- [x] Mouse look (glutWarpPointer infinite capture)
 
 
 ---
 
-## Step 9: Debug Overlay ⬜
+## Step 6: Collision Detection ✅
 
-- [ ] Debug.h + Debug.cpp
-- [ ] F3 toggle: FPS, position, chunk coords
-- [ ] F4 toggle: wireframe mode
+- [x] Player.h + Player.cpp (owns Camera, AABB 0.6x1.8)
+- [x] Per-axis AABB vs World::isSolidAt()
+- [x] Cannot walk through blocks
+
+
+---
+
+## Step 7: Gravity & Jumping ✅
+
+- [x] Euler integration: vel.y -= gravity * dt
+- [x] Jump impulse when grounded
+- [x] Terminal velocity clamp
+
+
+---
+
+## Step 8: Crosshair HUD ✅
+
+- [x] Orthographic projection overlay in Renderer
+- [x] Two short lines at screen center
+
+
+---
+
+## Step 9: Debug Overlay ✅
+
+- [x] Debug.h + Debug.cpp
+- [x] F3 toggle: FPS, position, chunk coords
+- [x] F4 toggle: wireframe mode
 

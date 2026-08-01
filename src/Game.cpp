@@ -18,9 +18,16 @@ Game* Game::s_instance = nullptr;
 // -----------------------------------------------------------------------------
 // Constructor
 // -----------------------------------------------------------------------------
-Game::Game() {
+Game::Game() : m_player(glm::vec3(
+    (Config::WORLD_CHUNKS_X * Config::CHUNK_SIZE) / 2.0f,
+    (Config::WORLD_CHUNKS_Y * Config::CHUNK_SIZE) + 20.0f,
+    (Config::WORLD_CHUNKS_Z * Config::CHUNK_SIZE) + 20.0f)) {
     // Register this instance so static callbacks can delegate to it
     s_instance = this;
+    
+    // Initialize the world
+    m_world.init();
+    WorldGenerator::generateFlatWorld(&m_world);
 }
 
 // -----------------------------------------------------------------------------
@@ -101,6 +108,7 @@ void Game::onDisplay() {
             return;
         }
         m_gladLoaded = true;
+        m_renderer.onResize(m_renderer.getWidth(), m_renderer.getHeight());
     }
 
     // --- Delta Time Calculation ---
@@ -122,6 +130,7 @@ void Game::onDisplay() {
 }
 
 void Game::onReshape(int w, int h) {
+    if (!m_gladLoaded) return;
     m_renderer.onResize(w, h);
 }
 

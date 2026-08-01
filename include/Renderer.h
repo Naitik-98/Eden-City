@@ -1,4 +1,4 @@
-// =============================================================================
+ // =============================================================================
 // Renderer.h — OpenGL Rendering Layer
 // =============================================================================
 // The Renderer is the ONLY class that calls OpenGL directly (besides
@@ -15,6 +15,12 @@
 // =============================================================================
 
 #pragma once
+
+#include "ShaderProgram.h"
+#include "World.h"
+#include <glad/glad.h>
+
+class Camera;
 
 class Renderer {
 public:
@@ -42,4 +48,26 @@ public:
     // Updates the OpenGL viewport to match the new window dimensions.
     // -------------------------------------------------------------------------
     void onResize(int width, int height);
+
+    // -------------------------------------------------------------------------
+    // render() — renders the 3D world
+    // -------------------------------------------------------------------------
+    void render(World* world, Camera* camera);
+
+    // -------------------------------------------------------------------------
+    // drawCrosshair() — renders a 2D crosshair overlay
+    // -------------------------------------------------------------------------
+    void drawCrosshair();
+
+    int getWidth() const { return m_width; }
+    int getHeight() const { return m_height; }
+
+private:
+    ShaderProgram m_shader;
+    int m_width = 1280;
+    int m_height = 720;
+    
+    // Crosshair resources
+    unsigned int m_crosshairVAO = 0;
+    unsigned int m_crosshairVBO = 0;
 };

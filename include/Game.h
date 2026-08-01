@@ -18,6 +18,9 @@
 #pragma once
 
 #include "Renderer.h"
+#include "World.h"
+#include "Player.h"
+#include "InputManager.h"
 
 class Game {
 public:
@@ -46,6 +49,11 @@ private:
     static void s_display();
     static void s_reshape(int w, int h);
     static void s_idle();
+    static void s_keyboard(unsigned char key, int x, int y);
+    static void s_keyboardUp(unsigned char key, int x, int y);
+    static void s_special(int key, int x, int y);
+    static void s_specialUp(int key, int x, int y);
+    static void s_passiveMotion(int x, int y);
 
     // -------------------------------------------------------------------------
     // Per-frame logic (called by s_display / s_idle)
@@ -53,11 +61,16 @@ private:
     void onDisplay();
     void onReshape(int w, int h);
     void onIdle();
+    void onKeyboard(unsigned char key, bool pressed);
+    void onSpecial(int key, bool pressed);
+    void onMotion(int x, int y);
 
     // -------------------------------------------------------------------------
     // Subsystems owned by Game
     // -------------------------------------------------------------------------
     Renderer m_renderer;
+    World m_world;
+    Player m_player;
 
     // -------------------------------------------------------------------------
     // Timing

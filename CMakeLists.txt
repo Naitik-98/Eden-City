@@ -23,6 +23,15 @@ set(SOURCES
     src/main.cpp
     src/Game.cpp
     src/Renderer.cpp
+    src/ShaderProgram.cpp
+    src/Chunk.cpp
+    src/World.cpp
+    src/WorldGenerator.cpp
+    src/MeshBuilder.cpp
+    src/Camera.cpp
+    src/InputManager.cpp
+    src/Player.cpp
+    src/Debug.cpp
     lib/glad/src/glad.c          # OpenGL function loader
 )
 
@@ -32,17 +41,9 @@ set_source_files_properties(lib/glad/src/glad.c PROPERTIES
 )
 
 # (Week 1 additions will be listed here as they are created)
-# src/Game.cpp
-# src/Renderer.cpp
-# src/ShaderProgram.cpp
 # src/Camera.cpp
 # src/InputManager.cpp
 # src/Player.cpp
-# src/World.cpp
-# src/Chunk.cpp
-# src/Block.cpp
-# src/WorldGenerator.cpp
-# src/MeshBuilder.cpp
 # src/Debug.cpp
 
 # -----------------------------------------------------------------------------
@@ -70,7 +71,7 @@ target_link_directories(EdenCity PRIVATE
 if(WIN32)
     target_link_libraries(EdenCity PRIVATE
         opengl32          # Windows system OpenGL
-        freeglut          # MinGW: links lib/freeglut/lib/x64/libfreeglut.dll.a
+        ${CMAKE_SOURCE_DIR}/lib/freeglut/lib/x64/libfreeglut.dll.a # MinGW: absolute path
         gdi32             # required by freeglut on Windows
         winmm             # Windows multimedia (freeglut dependency)
     )
@@ -91,6 +92,8 @@ else()
         -Wall -Wextra -Wpedantic
         -Wno-unused-parameter   # acceptable during active development
     )
+    # Statically link MinGW standard libraries to avoid missing DLL errors
+    target_link_options(EdenCity PRIVATE -static-libgcc -static-libstdc++ -static)
 endif()
 
 # -----------------------------------------------------------------------------
