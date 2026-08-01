@@ -50,3 +50,29 @@ void InputManager::clearMouseDelta() {
     m_deltaX = 0;
     m_deltaY = 0;
 }
+
+void InputManager::setMouseButton(int button, bool state) {
+    if (button >= 0 && button < 5) {
+        if (state && !m_mouseButtons[button]) {
+            m_mouseButtonsJustPressed[button] = true;
+        }
+        m_mouseButtons[button] = state;
+    }
+}
+
+bool InputManager::isMouseButtonPressed(int button) const {
+    if (button >= 0 && button < 5) return m_mouseButtons[button];
+    return false;
+}
+
+bool InputManager::wasMouseButtonJustPressed(int button) {
+    if (button >= 0 && button < 5) return m_mouseButtonsJustPressed[button];
+    return false;
+}
+
+void InputManager::update() {
+    // Clear just-pressed state every frame
+    for (int i = 0; i < 5; ++i) {
+        m_mouseButtonsJustPressed[i] = false;
+    }
+}

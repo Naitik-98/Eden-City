@@ -32,6 +32,8 @@ set(SOURCES
     src/InputManager.cpp
     src/Player.cpp
     src/Debug.cpp
+    src/Raycaster.cpp
+    src/TextureManager.cpp
     lib/glad/src/glad.c          # OpenGL function loader
 )
 

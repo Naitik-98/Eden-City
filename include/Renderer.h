@@ -44,6 +44,11 @@ public:
     void endFrame();
 
     // -------------------------------------------------------------------------
+    // setClearColor() — override the background clear color dynamically
+    // -------------------------------------------------------------------------
+    void setClearColor(float r, float g, float b);
+
+    // -------------------------------------------------------------------------
     // onResize() — call when the window is resized (GLUT reshape callback).
     // Updates the OpenGL viewport to match the new window dimensions.
     // -------------------------------------------------------------------------
@@ -66,6 +71,10 @@ private:
     ShaderProgram m_shader;
     int m_width = 1280;
     int m_height = 720;
+    
+    float m_clearR = 0.05f;
+    float m_clearG = 0.05f;
+    float m_clearB = 0.12f;
     
     // Crosshair resources
     unsigned int m_crosshairVAO = 0;

@@ -20,10 +20,14 @@ public:
     Camera* getCamera() { return &m_camera; }
     glm::vec3 getPosition() const { return m_position; }
 
+    void setInputEnabled(bool enabled) { m_inputEnabled = enabled; }
+    bool isGrounded() const { return m_isGrounded; }
+
 private:
     glm::vec3 m_position;
     glm::vec3 m_velocity;
     bool m_isGrounded = false;
+    bool m_inputEnabled = true;
     
     // Player dimensions
     float m_width = 0.6f;

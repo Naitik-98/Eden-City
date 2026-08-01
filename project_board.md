@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| **Overall Progress** | `██░░░░░░░░░░░░░░░░░░` 10% |
-| **Current Week** | Week 1 — Engine Foundation |
-| **Current Task** | Step 2: OpenGL Window |
+| **Overall Progress** | `████████░░░░░░░░░░░░` 40% |
+| **Current Week** | Week 3 — Eden City Content |
+| **Current Task** | Step 1: Floating Islands |
 | **Blocked By** | None |
 | **Build System** | CMake 3.31 + MinGW GCC 14.2 (CodeBlocks) |
 
@@ -30,12 +30,12 @@
 
 | Step | Status | Description |
 |---|---|---|
-| Textures | ⬜ | TextureManager, texture atlas |
-| Face Culling | ⬜ | Cross-chunk boundary culling |
-| Raycaster | ⬜ | Block selection (Camera → World) |
-| Break Blocks | ⬜ | Left-click destroy |
-| Place Blocks | ⬜ | Right-click place |
-| Lighting | ⬜ | Directional light in shader |
+| Textures | ✅ Done | TextureManager, texture atlas |
+| Face Culling | ✅ Done | Cross-chunk boundary culling |
+| Raycaster | ✅ Done | Block selection (Camera → World) |
+| Break Blocks | ✅ Done | Left-click destroy |
+| Place Blocks | ✅ Done | Right-click place |
+| Lighting | ✅ Done | Directional light in shader |
 
 ## Week 3 — Eden City Content
 

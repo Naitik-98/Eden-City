@@ -27,6 +27,13 @@ public:
     void setFirstMouse(bool first) { m_firstMouse = first; }
     bool isFirstMouse() const { return m_firstMouse; }
 
+    void setMouseButton(int button, bool state);
+    bool isMouseButtonPressed(int button) const;
+    bool wasMouseButtonJustPressed(int button);
+    
+    // Call this every frame to clear the "just pressed" state
+    void update();
+
 private:
     InputManager() = default;
 
@@ -37,6 +44,9 @@ private:
     int m_mouseY = 0;
     int m_deltaX = 0;
     int m_deltaY = 0;
+    
+    std::array<bool, 5> m_mouseButtons{false};
+    std::array<bool, 5> m_mouseButtonsJustPressed{false};
     
     bool m_firstMouse = true;
 };

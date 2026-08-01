@@ -28,7 +28,7 @@ bool Renderer::init() {
     // Load all OpenGL 3.3 Core function pointers.
     // glutGetProcAddress is the loader function freeglut provides.
     // gladLoadGLLoader returns 0 on failure.
-    if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glutGetProcAddress))) {
+    if (!gladLoadGL()) {
         std::cerr << "[Renderer] ERROR: Failed to initialize GLAD.\n";
         std::cerr << "           Make sure your GPU supports OpenGL 3.3+.\n";
         return false;
@@ -89,8 +89,14 @@ void Renderer::beginFrame() {
     // Set the sky color and clear both the color and depth buffers.
     // Color buffer: paints every pixel with sky color before drawing geometry.
     // Depth buffer: resets depth values so new frame starts fresh.
-    glClearColor(Config::SKY_R, Config::SKY_G, Config::SKY_B, 1.0f);
+    glClearColor(m_clearR, m_clearG, m_clearB, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Renderer::setClearColor(float r, float g, float b) {
+    m_clearR = r;
+    m_clearG = g;
+    m_clearB = b;
 }
 
 // -----------------------------------------------------------------------------

@@ -22,6 +22,12 @@
 #include "Player.h"
 #include "InputManager.h"
 
+enum class GameState {
+    INTRO_BLACK,
+    INTRO_FALLING,
+    PLAYING
+};
+
 class Game {
 public:
     // -------------------------------------------------------------------------
@@ -54,6 +60,7 @@ private:
     static void s_special(int key, int x, int y);
     static void s_specialUp(int key, int x, int y);
     static void s_passiveMotion(int x, int y);
+    static void s_mouse(int button, int state, int x, int y);
 
     // -------------------------------------------------------------------------
     // Per-frame logic (called by s_display / s_idle)
@@ -64,6 +71,7 @@ private:
     void onKeyboard(unsigned char key, bool pressed);
     void onSpecial(int key, bool pressed);
     void onMotion(int x, int y);
+    void onMouse(int button, int state, int x, int y);
 
     // -------------------------------------------------------------------------
     // Subsystems owned by Game
@@ -73,11 +81,14 @@ private:
     Player m_player;
 
     // -------------------------------------------------------------------------
-    // Timing
+    // Timing & State
     // -------------------------------------------------------------------------
     float m_lastTime   = 0.0f;   // time of last frame (seconds)
     float m_deltaTime  = 0.0f;   // seconds elapsed since last frame
     bool  m_gladLoaded = false;  // GLAD only loads once after context creation
+
+    GameState m_state = GameState::INTRO_BLACK;
+    float m_introTimer = 2.0f;
 
     // -------------------------------------------------------------------------
     // Singleton pointer — needed so static GLUT callbacks can reach the instance.

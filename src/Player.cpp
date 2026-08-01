@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Config.h"
+#include "Raycaster.h"
 #include <cmath>
 
 Player::Player(glm::vec3 startPos) : m_position(startPos), m_velocity(0.0f) {
@@ -40,10 +41,12 @@ void Player::handleMovement(float dt, World* world, InputManager* input) {
     float moveSpeed = 5.0f * dt;
     glm::vec3 moveDir(0.0f);
 
-    if (input->isKeyPressed('w')) moveDir += m_camera.Front;
-    if (input->isKeyPressed('s')) moveDir -= m_camera.Front;
-    if (input->isKeyPressed('a')) moveDir -= m_camera.Right;
-    if (input->isKeyPressed('d')) moveDir += m_camera.Right;
+    if (m_inputEnabled) {
+        if (input->isKeyPressed('w')) moveDir += m_camera.Front;
+        if (input->isKeyPressed('s')) moveDir -= m_camera.Front;
+        if (input->isKeyPressed('a')) moveDir -= m_camera.Right;
+        if (input->isKeyPressed('d')) moveDir += m_camera.Right;
+    }
 
     // Flatten movement for walking
     moveDir.y = 0.0f;
@@ -61,7 +64,7 @@ void Player::handleMovement(float dt, World* world, InputManager* input) {
         m_velocity.y = TERMINAL_VELOCITY;
     }
 
-    if (m_isGrounded && input->isKeyPressed(' ')) {
+    if (m_isGrounded && m_inputEnabled && input->isKeyPressed(' ')) {
         m_velocity.y = JUMP_IMPULSE;
         m_isGrounded = false;
     }
@@ -91,15 +94,55 @@ void Player::handleMovement(float dt, World* world, InputManager* input) {
     if (!checkCollision(world, getAABB(nextPosZ))) {
         m_position.z = nextPosZ.z;
     }
+
+    // Out of bounds reset (fell off the world)
+    if (m_position.y < -50.0f) {
+        // Reset to above the center of the world
+        m_position = glm::vec3(
+            (Config::WORLD_CHUNKS_X * Config::CHUNK_SIZE) / 2.0f,
+            (Config::WORLD_CHUNKS_Y * Config::CHUNK_SIZE) + 20.0f,
+            (Config::WORLD_CHUNKS_Z * Config::CHUNK_SIZE) / 2.0f
+        );
+        m_velocity = glm::vec3(0.0f);
+    }
 }
 
 void Player::update(float dt, World* world, InputManager* input) {
     // Update camera look
-    float dx = input->getMouseDeltaX();
-    float dy = input->getMouseDeltaY();
-    if (dx != 0 || dy != 0) {
-        m_camera.processMouseMovement(dx, dy);
-        input->clearMouseDelta();
+    if (m_inputEnabled) {
+        float dx = input->getMouseDeltaX();
+        float dy = input->getMouseDeltaY();
+        if (dx != 0 || dy != 0) {
+            m_camera.processMouseMovement(dx, dy);
+            input->clearMouseDelta();
+        }
+
+        // --- Block Interaction ---
+        // Left click: Break block
+        if (input->wasMouseButtonJustPressed(0)) {
+            RaycastResult hit = Raycaster::raycast(world, m_camera.Position, m_camera.Front, 8.0f);
+            if (hit.hit) {
+                world->setBlockAt(hit.hitBlockPos.x, hit.hitBlockPos.y, hit.hitBlockPos.z, BlockType::AIR, false);
+            }
+        }
+        
+        // Middle click: Place Crystal
+        if (input->wasMouseButtonJustPressed(1)) {
+            RaycastResult hit = Raycaster::raycast(world, m_camera.Position, m_camera.Front, 8.0f);
+            if (hit.hit) {
+                glm::ivec3 placePos = hit.hitBlockPos + hit.hitNormal;
+                world->setBlockAt(placePos.x, placePos.y, placePos.z, BlockType::CRYSTAL, true);
+            }
+        }
+
+        // Right click: Place Metal
+        if (input->wasMouseButtonJustPressed(2)) {
+            RaycastResult hit = Raycaster::raycast(world, m_camera.Position, m_camera.Front, 8.0f);
+            if (hit.hit) {
+                glm::ivec3 placePos = hit.hitBlockPos + hit.hitNormal;
+                world->setBlockAt(placePos.x, placePos.y, placePos.z, BlockType::METAL, true);
+            }
+        }
     }
 
     handleMovement(dt, world, input);

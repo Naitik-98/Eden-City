@@ -8,7 +8,7 @@
 //     in memory (2 bytes). A 16^3 chunk = 8,192 bytes. Very cache-friendly.
 //   - 'active' flag: allows toggling visibility without changing type.
 //     Useful for: undo, ghost-block preview, animation, soft-delete.
-//   - getBlockColor(): Week 1 uses solid colors. Week 2 replaces with textures.
+//   - getBlockUVBounds(): Week 2 replaces solid colors with texture atlasing.
 //     Keeping this as a free function (not a method) because Block is a value
 //     type — it should stay as lightweight as possible.
 // =============================================================================
@@ -48,16 +48,38 @@ inline bool isSolidType(BlockType type) {
 }
 
 // -----------------------------------------------------------------------------
-// Helper: get the display color for a block type (Week 1 — no textures)
-// Returns magenta for unknown types so they're immediately visible as bugs.
+// Helper: get the UV bounds for a block type's texture in the atlas.
+// Returns {u0, v0, u1, v1}
+// Atlas is 2x2: 
+// (0,1): Grass  (1,1): Dirt
+// (0,0): Stone  (1,0): Metal
 // -----------------------------------------------------------------------------
-inline glm::vec3 getBlockColor(BlockType type) {
+inline glm::vec4 getBlockUVBounds(BlockType type, int face) {
+    // face 5 is top, face 4 is bottom, others are sides
+    float u0 = 0.0f, v0 = 0.0f, u1 = 0.5f, v1 = 0.5f;
+
     switch (type) {
-        case BlockType::GRASS:   return glm::vec3(0.30f, 0.70f, 0.20f);  // natural green
-        case BlockType::STONE:   return glm::vec3(0.50f, 0.50f, 0.50f);  // neutral gray
-        case BlockType::DIRT:    return glm::vec3(0.55f, 0.35f, 0.15f);  // earthy brown
-        case BlockType::CRYSTAL: return glm::vec3(0.20f, 0.85f, 0.90f);  // futuristic cyan
-        case BlockType::METAL:   return glm::vec3(0.75f, 0.75f, 0.80f);  // polished silver
-        default:                 return glm::vec3(1.0f,  0.0f,  1.0f);   // magenta = bug
+        case BlockType::GRASS:
+            if (face == 5) { u0 = 0.0f; v0 = 0.5f; } // Top: Grass top
+            else if (face == 4) { u0 = 0.5f; v0 = 0.5f; } // Bottom: Dirt
+            else { u0 = 0.5f; v0 = 0.5f; } // Side: Dirt (Normally side grass, using dirt for now)
+            break;
+        case BlockType::DIRT:
+            u0 = 0.5f; v0 = 0.5f; // Top-Right
+            break;
+        case BlockType::STONE:
+            u0 = 0.0f; v0 = 0.0f; // Bottom-Left
+            break;
+        case BlockType::CRYSTAL:
+        case BlockType::METAL:
+            u0 = 0.5f; v0 = 0.0f; // Bottom-Right
+            break;
+        default:
+            u0 = 0.0f; v0 = 0.0f;
+            break;
     }
+    u1 = u0 + 0.5f;
+    v1 = v0 + 0.5f;
+
+    return glm::vec4(u0, v0, u1, v1);
 }
