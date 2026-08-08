@@ -34,6 +34,8 @@ set(SOURCES
     src/Debug.cpp
     src/Raycaster.cpp
     src/TextureManager.cpp
+    src/WorldSerializer.cpp
+    src/AudioManager.cpp
     lib/glad/src/glad.c          # OpenGL function loader
 )
 
@@ -126,5 +128,36 @@ add_custom_command(TARGET EdenCity POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${CMAKE_SOURCE_DIR}/assets/shaders/basic.frag"
         "$<TARGET_FILE_DIR:EdenCity>/assets/shaders/basic.frag"
-    COMMENT "Copying shaders to output directory"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/assets/shaders/sky.vert"
+        "$<TARGET_FILE_DIR:EdenCity>/assets/shaders/sky.vert"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/assets/shaders/sky.frag"
+        "$<TARGET_FILE_DIR:EdenCity>/assets/shaders/sky.frag"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/assets/shaders/crosshair.vert"
+        "$<TARGET_FILE_DIR:EdenCity>/assets/shaders/crosshair.vert"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/assets/shaders/crosshair.frag"
+        "$<TARGET_FILE_DIR:EdenCity>/assets/shaders/crosshair.frag"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/assets/shaders/menu.vert"
+        "$<TARGET_FILE_DIR:EdenCity>/assets/shaders/menu.vert"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/assets/shaders/menu.frag"
+        "$<TARGET_FILE_DIR:EdenCity>/assets/shaders/menu.frag"
+    # Texture atlas and menu
+    COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:EdenCity>/assets/textures"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/assets/textures/atlas.png"
+        "$<TARGET_FILE_DIR:EdenCity>/assets/textures/atlas.png"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/assets/textures/menu.png"
+        "$<TARGET_FILE_DIR:EdenCity>/assets/textures/menu.png"
+    # Sounds
+    COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:EdenCity>/assets/sounds"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/assets/sounds/ambient.wav"
+        "$<TARGET_FILE_DIR:EdenCity>/assets/sounds/ambient.wav"
+    COMMENT "Copying shaders, textures, and sounds to output directory"
 )

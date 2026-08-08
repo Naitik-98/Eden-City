@@ -3,7 +3,8 @@
 #include "Raycaster.h"
 #include <cmath>
 
-Player::Player(glm::vec3 startPos) : m_position(startPos), m_velocity(0.0f) {
+Player::Player(glm::vec3 startPos) : m_velocity(0.0f) {
+    m_position = startPos;
     m_camera.Position = m_position + glm::vec3(0.0f, m_height * 0.9f, 0.0f); // Eye level
 }
 
@@ -17,12 +18,13 @@ AABB Player::getAABB(glm::vec3 pos) const {
 
 bool Player::checkCollision(World* world, const AABB& aabb) const {
     // Check all block coordinates that intersect with the AABB
-    int minX = std::floor(aabb.min.x);
-    int maxX = std::floor(aabb.max.x);
-    int minY = std::floor(aabb.min.y);
-    int maxY = std::floor(aabb.max.y);
-    int minZ = std::floor(aabb.min.z);
-    int maxZ = std::floor(aabb.max.z);
+    // Add small epsilon to prevent snagging on flush wall boundaries
+    int minX = std::floor(aabb.min.x + 0.001f);
+    int maxX = std::floor(aabb.max.x - 0.001f);
+    int minY = std::floor(aabb.min.y + 0.001f);
+    int maxY = std::floor(aabb.max.y - 0.001f);
+    int minZ = std::floor(aabb.min.z + 0.001f);
+    int maxZ = std::floor(aabb.max.z - 0.001f);
 
     for (int x = minX; x <= maxX; ++x) {
         for (int y = minY; y <= maxY; ++y) {
@@ -37,8 +39,12 @@ bool Player::checkCollision(World* world, const AABB& aabb) const {
 }
 
 void Player::handleMovement(float dt, World* world, InputManager* input) {
-    // Temporary camera used to figure out direction vectors
-    float moveSpeed = 5.0f * dt;
+    float speed = Config::PLAYER_SPEED;
+    // GLUT_KEY_SHIFT_L = 112, GLUT_KEY_SHIFT_R = 113
+    if (m_inputEnabled && (input->isSpecialKeyPressed(112) || input->isSpecialKeyPressed(113))) {
+        speed *= Config::PLAYER_SPRINT_MULTIPLIER;
+    }
+    float moveSpeed = speed * dt;
     glm::vec3 moveDir(0.0f);
 
     if (m_inputEnabled) {
@@ -143,6 +149,19 @@ void Player::update(float dt, World* world, InputManager* input) {
                 world->setBlockAt(placePos.x, placePos.y, placePos.z, BlockType::METAL, true);
             }
         }
+        
+        bool interactPressed = input->isKeyPressed('e') || input->isKeyPressed('E');
+        if (interactPressed && !m_wasInteractPressed) {
+            // Find entities in the world to interact with
+            for (const auto& entity : world->getEntities()) {
+                float dist = glm::distance(m_position, entity->getPosition());
+                if (dist < 10.0f) {
+                    entity->onInteract(this);
+                    break; // Interact with one entity at a time
+                }
+            }
+        }
+        m_wasInteractPressed = interactPressed;
     }
 
     handleMovement(dt, world, input);

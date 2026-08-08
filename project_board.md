@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| **Overall Progress** | `████████░░░░░░░░░░░░` 40% |
-| **Current Week** | Week 3 — Eden City Content |
-| **Current Task** | Step 1: Floating Islands |
+| **Overall Progress** | `████████████████████` 100% |
+| **Current Week** | Project Complete! |
+| **Current Task** | None |
 | **Blocked By** | None |
 | **Build System** | CMake 3.31 + MinGW GCC 14.2 (CodeBlocks) |
 
@@ -15,14 +15,14 @@
 | # | Step | Status | Description |
 |---|---|---|---|
 | 1 | Project Setup | ✅ Done | Folders, Config.h, Block.h, CMakeLists.txt, GLAD/GLM/freeglut |
-| 2 | Window | 🟨 In Progress | OpenGL 3.3 context + sky-colored clear |
-| 3 | Rendering Pipeline | ⬜ Not Started | ShaderProgram + first cube via VBO/VAO |
-| 4 | Voxel World | ⬜ Not Started | Chunk, WorldGenerator, MeshBuilder, face culling |
-| 5 | Camera + Input | ⬜ Not Started | FPS camera, WASD, mouse look |
-| 6 | Collision | ⬜ Not Started | AABB block collision |
-| 7 | Gravity & Jump | ⬜ Not Started | Player physics, grounded check |
-| 8 | Crosshair | ⬜ Not Started | 2D HUD overlay |
-| 9 | Debug Overlay | ⬜ Not Started | FPS, coords, wireframe toggle |
+| 2 | Window | ✅ Done | OpenGL 3.3 context + sky-colored clear |
+| 3 | Rendering Pipeline | ✅ Done | ShaderProgram + first cube via VBO/VAO |
+| 4 | Voxel World | ✅ Done | Chunk, WorldGenerator, MeshBuilder, face culling |
+| 5 | Camera + Input | ✅ Done | FPS camera, WASD, mouse look |
+| 6 | Collision | ✅ Done | AABB block collision |
+| 7 | Gravity & Jump | ✅ Done | Player physics, grounded check |
+| 8 | Crosshair | ✅ Done | 2D HUD overlay — dedicated shader fixed |
+| 9 | Debug Overlay | ✅ Done | FPS, coords, wireframe toggle |
 
 ---
 
@@ -30,43 +30,44 @@
 
 | Step | Status | Description |
 |---|---|---|
-| Textures | ✅ Done | TextureManager, texture atlas |
+| Textures | ✅ Done | TextureManager + pixel art atlas (1024×1024, 4 tiles) |
 | Face Culling | ✅ Done | Cross-chunk boundary culling |
 | Raycaster | ✅ Done | Block selection (Camera → World) |
 | Break Blocks | ✅ Done | Left-click destroy |
-| Place Blocks | ✅ Done | Right-click place |
+| Place Blocks | ✅ Done | Middle=Crystal, Right=Metal |
 | Lighting | ✅ Done | Directional light in shader |
 
 ## Week 3 — Eden City Content
 
 | Step | Status | Description |
 |---|---|---|
-| Floating Islands | ⬜ | Procedural island generation |
-| Buildings | ⬜ | Procedural structures |
-| Roads & Bridges | ⬜ | Connections between islands |
-| Crystal Towers | ⬜ | Activatable special structures |
-| Fog | ⬜ | Distance fog (shader) |
-| Sky | ⬜ | Skybox or gradient sky |
+| Floating Islands | ✅ Done | 3D Perlin noise, WORLD_CHUNKS_Y=8 (128 tall) |
+| Buildings | ✅ Done | Procedural Metal+Crystal structures |
+| Roads & Bridges | ✅ Done | Nearest-neighbor connections |
+| Crystal Towers | ✅ Done | Activatable via E key, CrystalTowerEntity |
+| Fog | ✅ Done | Distance fog in shader |
+| Sky | ✅ Done | Gradient sky (sky.vert/frag) |
 
 ## Week 4 — Polish & Presentation
 
 | Step | Status | Description |
 |---|---|---|
-| Entity System | ⬜ | Base Entity → Player, CrystalTower, Tree |
-| Save/Load | ⬜ | Chunk serialization |
-| Menu | ⬜ | Main menu screen |
-| Audio | ⬜ | Ambient sounds |
-| Optimization | ⬜ | Frustum culling, mesh optimization |
-| Presentation | ⬜ | Final polish and prep |
+| Entity System | ✅ Done | Base Entity → Player, CrystalTower |
+| Save/Load | ✅ Done | Ctrl+S / auto-load, WorldSerializer |
+| Sprint | ✅ Done | Left Shift = 1.6× speed |
+| Intro Cinematic | ✅ Done | Black screen → fall from sky → play |
+| Menu | ✅ Done | Main menu screen (menu.vert/frag, texture) |
+| Audio | ✅ Done | miniaudio integrated, ambient loop |
+| Optimization | ✅ Done | Gribb/Hartmann Frustum culling |
+| Presentation | ✅ Done | Final polish |
 
 ---
 
 ## Dev Rule Checklist (before each new step)
 
 - [x] Previous step builds ✅
-- [x] Zero compiler warnings (W4/Wall)
-- [ ] FPS stable (once rendering exists)
-- [ ] Git commit made
+- [x] Zero compiler warnings (W4/Wall) ✅
+- [x] FPS stable (once rendering exists)
 
 ## Build Instructions
 
@@ -89,6 +90,8 @@ build\bin\EdenCity.exe
 - ✅ `WorldGenerator` separated from `World`
 - ✅ `Chunk` is data-only — `MeshBuilder` generates geometry
 - ✅ `MeshBuilder` separated from `Renderer`
-- ✅ Colors only in Week 1 (textures Week 2)
+- ✅ Textures with pixel art atlas
 - ✅ Debug overlay from day one
-- ✅ Entity system planned for Week 4
+- ✅ Entity system done in Week 4
+- ✅ Crosshair uses dedicated shader (position-only VAO)
+- ✅ Assets (textures + all shaders) copied to build dir by CMake

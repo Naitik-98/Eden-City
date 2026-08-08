@@ -23,6 +23,7 @@
 #include "InputManager.h"
 
 enum class GameState {
+    MENU,
     INTRO_BLACK,
     INTRO_FALLING,
     PLAYING
@@ -87,7 +88,7 @@ private:
     float m_deltaTime  = 0.0f;   // seconds elapsed since last frame
     bool  m_gladLoaded = false;  // GLAD only loads once after context creation
 
-    GameState m_state = GameState::INTRO_BLACK;
+    GameState m_state = GameState::MENU;
     float m_introTimer = 2.0f;
 
     // -------------------------------------------------------------------------

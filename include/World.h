@@ -1,8 +1,11 @@
 #pragma once
 
 #include "Chunk.h"
+#include "Entity.h"
 #include <vector>
 #include <memory>
+
+class InputManager;
 
 class World {
 public:
@@ -31,6 +34,14 @@ public:
     // Access to all chunks for rendering
     const std::vector<std::unique_ptr<Chunk>>& getChunks() const { return m_chunks; }
 
+    // Entity Management
+    void addEntity(std::unique_ptr<Entity> entity) {
+        m_entities.push_back(std::move(entity));
+    }
+    const std::vector<std::unique_ptr<Entity>>& getEntities() const { return m_entities; }
+    void updateEntities(float dt, InputManager* input);
+
 private:
     std::vector<std::unique_ptr<Chunk>> m_chunks;
+    std::vector<std::unique_ptr<Entity>> m_entities;
 };

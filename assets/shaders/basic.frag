@@ -3,8 +3,11 @@ out vec4 FragColor;
 
 in vec2 TexCoord;
 in vec3 Normal;
+in vec3 FragPos;
 
 uniform sampler2D texture1;
+uniform vec3 viewPos;
+uniform vec3 fogColor;
 
 void main()
 {
@@ -21,6 +24,16 @@ void main()
     
     // Final shading multiplier
     float lighting = ambient + (diff * 0.6);
+    vec4 finalColor = vec4(texColor.rgb * lighting, texColor.a);
     
-    FragColor = vec4(texColor.rgb * lighting, texColor.a);
+    // Fog calculation
+    float distance = length(viewPos - FragPos);
+    float fogStart = 30.0;
+    float fogEnd = 80.0;
+    
+    // Linear fog factor
+    float fogFactor = clamp((fogEnd - distance) / (fogEnd - fogStart), 0.0, 1.0);
+    
+    // Mix fog color with final color
+    FragColor = mix(vec4(fogColor, 1.0), finalColor, fogFactor);
 }

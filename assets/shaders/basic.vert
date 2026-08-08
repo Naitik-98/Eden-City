@@ -5,6 +5,7 @@ layout (location = 2) in vec2 aTexCoord;
 
 out vec2 TexCoord;
 out vec3 Normal;
+out vec3 FragPos;
 
 uniform mat4 MVP;
 
@@ -13,5 +14,6 @@ void main()
     gl_Position = MVP * vec4(aPos, 1.0);
     TexCoord = aTexCoord;
     Normal = aNormal;
+    FragPos = aPos;
 }
 

@@ -1,4 +1,5 @@
 #include "World.h"
+#include "InputManager.h"
 #include <cmath>
 #include <iostream>
 
@@ -122,4 +123,10 @@ bool World::isSolidAt(float worldX, float worldY, float worldZ) const {
     return isSolidAt(static_cast<int>(std::floor(worldX)),
                      static_cast<int>(std::floor(worldY)),
                      static_cast<int>(std::floor(worldZ)));
+}
+
+void World::updateEntities(float dt, InputManager* input) {
+    for (const auto& entity : m_entities) {
+        entity->update(dt, this, input);
+    }
 }

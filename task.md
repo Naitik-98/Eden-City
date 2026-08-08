@@ -35,8 +35,8 @@
 ## Step 3: Rendering Pipeline ✅
 
 - [x] Create ShaderProgram.h + ShaderProgram.cpp
-- [x] Write full basic.vert (position + color + MVP)
-- [x] Write full basic.frag (pass-through color)
+- [x] Write full basic.vert (position + normal + UV + MVP)
+- [x] Write full basic.frag (texture + lighting + fog)
 - [x] VBO/VAO setup for a colored cube
 - [x] MVP matrices: glm::perspective + glm::lookAt + glm::mat4(1.0)
 - [x] Render first colored cube on screen
@@ -87,6 +87,7 @@
 
 - [x] Orthographic projection overlay in Renderer
 - [x] Two short lines at screen center
+- [x] Dedicated crosshair shader (fix: separate from world shader)
 
 
 ---
@@ -94,6 +95,46 @@
 ## Step 9: Debug Overlay ✅
 
 - [x] Debug.h + Debug.cpp
-- [x] F3 toggle: FPS, position, chunk coords
+- [x] F3 toggle: FPS, position, chunk coords (title bar)
 - [x] F4 toggle: wireframe mode
 
+
+---
+
+## Week 2: Interaction & Polish ✅
+
+- [x] TextureManager + stb_image + atlas.png (proper pixel art tiles)
+- [x] Cross-chunk face culling (MeshBuilder)
+- [x] Raycaster (Camera → World block selection)
+- [x] Left-click: break blocks
+- [x] Middle-click: place Crystal
+- [x] Right-click: place Metal
+- [x] Directional lighting (shader)
+- [x] Distance fog (shader)
+
+
+---
+
+## Week 3: Eden City Content ✅
+
+- [x] Floating island generation (3D Perlin noise with vertical gradient)
+- [x] Procedural buildings (Metal walls + Crystal windows)
+- [x] Roads (nearest-neighbor connections)
+- [x] Crystal Towers (rare, activatable via E key)
+- [x] Distance fog
+- [x] Gradient sky (sky.vert/frag, fullscreen quad)
+- [x] Config: WORLD_CHUNKS_Y = 8 (128 blocks tall)
+
+
+---
+
+## Week 4: Polish & Presentation ✅
+
+- [x] Entity base class + CrystalTowerEntity
+- [x] WorldSerializer — Ctrl+S save / auto-load on startup
+- [x] Sprint (Left Shift, 1.6× speed)
+- [x] Intro cinematic (black screen → fall from sky)
+- [x] Main menu screen
+- [x] Audio (ambient sounds — miniaudio)
+- [x] Frustum culling (skip chunks outside camera frustum)
+- [x] Final visual polish

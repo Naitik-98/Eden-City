@@ -114,7 +114,9 @@ static void addFace(std::vector<float>& vertices, int x, int y, int z, const glm
 void MeshBuilder::buildMesh(Chunk* chunk, const World* world) {
     if (!chunk || !world) return;
 
-    std::vector<float> vertices;
+    // Reuse capacity to avoid memory allocation overhead during chunk building
+    static thread_local std::vector<float> vertices;
+    vertices.clear();
     
     // World coordinates for the chunk's base
     int worldBaseX = chunk->getX() * Config::CHUNK_SIZE;

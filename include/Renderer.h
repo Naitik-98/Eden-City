@@ -19,11 +19,21 @@
 #include "ShaderProgram.h"
 #include "World.h"
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 class Camera;
+class Chunk;
+
+// A single frustum plane (normal + distance from origin)
+struct Plane {
+    glm::vec3 normal;
+    float     distance;
+};
 
 class Renderer {
 public:
+    ~Renderer();
+
     // -------------------------------------------------------------------------
     // init() — call once AFTER the OpenGL context has been created by GLUT.
     // Loads all OpenGL function pointers via GLAD.
@@ -64,11 +74,25 @@ public:
     // -------------------------------------------------------------------------
     void drawCrosshair();
 
+    // -------------------------------------------------------------------------
+    // renderSky() — renders the procedural gradient sky
+    // -------------------------------------------------------------------------
+    void renderSky(Camera* camera);
+
+    // -------------------------------------------------------------------------
+    // renderMenu() — renders the main menu screen
+    // -------------------------------------------------------------------------
+    void renderMenu();
+
     int getWidth() const { return m_width; }
     int getHeight() const { return m_height; }
 
 private:
     ShaderProgram m_shader;
+    ShaderProgram m_skyShader;
+    ShaderProgram m_crosshairShader;
+    ShaderProgram m_menuShader;
+    
     int m_width = 1280;
     int m_height = 720;
     
@@ -79,4 +103,22 @@ private:
     // Crosshair resources
     unsigned int m_crosshairVAO = 0;
     unsigned int m_crosshairVBO = 0;
+    
+    // Sky resources
+    unsigned int m_skyVAO = 0;
+    unsigned int m_skyVBO = 0;
+
+    // Menu resources
+    unsigned int m_menuTextureID = 0;
+    unsigned int m_menuVAO = 0;
+    unsigned int m_menuVBO = 0;
+
+    // -------------------------------------------------------------------------
+    // Frustum culling helpers
+    // -------------------------------------------------------------------------
+    // Extract 6 frustum planes from a combined projection*view matrix.
+    static void extractFrustumPlanes(const glm::mat4& vp, Plane planes[6]);
+    // Returns true if the chunk's AABB is (at least partly) inside the frustum.
+    static bool isChunkVisible(const Chunk* chunk, const Plane planes[6]);
 };
+

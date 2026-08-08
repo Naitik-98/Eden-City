@@ -5,8 +5,11 @@
 #include "Game.h"
 #include "Config.h"
 #include "WorldGenerator.h"
+#include "CrystalTowerEntity.h"
+#include "WorldSerializer.h"
 #include "Debug.h"
 #include "TextureManager.h"
+#include "AudioManager.h"
 
 #include <GL/freeglut.h>
 #include <iostream>
@@ -34,7 +37,11 @@ Game::Game() : m_player(glm::vec3(
     
     // Initialize the world
     m_world.init();
-    WorldGenerator::generateEdenCity(&m_world);
+    
+    // Attempt to load saved world; if not found, generate a fresh one
+    if (!WorldSerializer::load(&m_world, "saves/world.ecty")) {
+        WorldGenerator::generateEdenCity(&m_world);
+    }
 
     // After world generation, we want the player to spawn above the highest block in the middle
     int midX = (Config::WORLD_CHUNKS_X * Config::CHUNK_SIZE) / 2;
@@ -80,6 +87,8 @@ void Game::run(int argc, char** argv) {
     // GLAD is NOT loaded yet (we need the context to exist first).
     glutCreateWindow(Config::WINDOW_TITLE);
 
+    AudioManager::getInstance().init();
+
     // --- Register GLUT Callbacks ---
     // These static methods will delegate to our instance methods.
     glutDisplayFunc(s_display);   // called when window needs redrawing
@@ -105,7 +114,10 @@ void Game::run(int argc, char** argv) {
     // This function DOES NOT RETURN. GLUT takes over and calls our
     // callbacks repeatedly. The application runs until the window is closed.
     std::cout << "[Game] Entering main loop. Close the window to exit.\n";
+    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
     glutMainLoop();
+    
+    AudioManager::getInstance().cleanup();
 }
 
 // =============================================================================
@@ -184,6 +196,16 @@ void Game::onDisplay() {
     // Clamping to 100ms prevents physics explosions on resume.
     if (m_deltaTime > 0.1f) m_deltaTime = 0.1f;
 
+    InputManager& input = InputManager::getInstance();
+
+    if (m_state == GameState::MENU) {
+        m_renderer.beginFrame();
+        m_renderer.renderMenu();
+        m_renderer.endFrame();
+        input.update(); // Clear just-pressed keys/buttons for next frame
+        return;
+    }
+
     // --- State Machine ---
     if (m_state == GameState::INTRO_BLACK) {
         m_introTimer -= m_deltaTime;
@@ -201,8 +223,8 @@ void Game::onDisplay() {
     }
 
     // --- Process Input & Logic ---
-    InputManager& input = InputManager::getInstance();
     m_player.update(m_deltaTime, &m_world, &input);
+    m_world.updateEntities(m_deltaTime, &input);
     Debug::getInstance().update(m_deltaTime, &m_player);
 
     input.update(); // Clear just-pressed keys/buttons for next frame
@@ -235,6 +257,16 @@ void Game::onKeyboard(unsigned char key, bool pressed) {
     // ESC to exit
     if (pressed && key == 27) {
         glutLeaveMainLoop();
+    }
+    // Enter to start game from menu
+    if (pressed && m_state == GameState::MENU && key == 13) {
+        m_state = GameState::INTRO_BLACK;
+        AudioManager::getInstance().playAmbient("assets/sounds/ambient.wav");
+        return;
+    }
+    // Ctrl+S to save
+    if (pressed && key == 19) { // ASCII 19 = Ctrl+S
+        WorldSerializer::save(&m_world, "saves/world.ecty");
     }
     InputManager::getInstance().setKeyPressed(key, pressed);
 }

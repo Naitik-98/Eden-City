@@ -21,9 +21,9 @@ namespace Config {
     // -------------------------------------------------------------------------
     constexpr int   CHUNK_SIZE    = 16;         // blocks per chunk axis
     constexpr int   WORLD_CHUNKS_X = 4;         // chunks along X
-    constexpr int   WORLD_CHUNKS_Y = 1;         // chunks along Y (vertical)
+    constexpr int   WORLD_CHUNKS_Y = 8;         // chunks along Y (vertical)
     constexpr int   WORLD_CHUNKS_Z = 4;         // chunks along Z
-    // Total world: 64 x 16 x 64 blocks
+    // Total world: 64 x 128 x 64 blocks
 
     // -------------------------------------------------------------------------
     // Player
